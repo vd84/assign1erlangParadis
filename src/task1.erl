@@ -10,21 +10,33 @@
 -author("dogge").
 
 %% API
--export([eval/1]).
+-export([eval/1, recur_eval/1]).
 
-eval(N) when is_number(N) -> N;
-eval(N) when not is_number(N) -> error;
+
 eval({Operation, E1, E2}) ->
+  try
+  {ok, recur_eval({Operation, E1, E2})}
+  catch
+    _:_ -> error
+  end.
+
+
+recur_eval(N) when is_number(N) -> N;
+recur_eval(N) when not is_number(N) and not is_tuple(N) -> error(badarith);
+recur_eval({Operation, E1, E2}) ->
+
   case Operation of
     'add' ->
-      eval(E1) + eval(E2);
+      recur_eval(E1) + recur_eval(E2);
     'sub' ->
-      eval(E1) - eval(E2);
+      recur_eval(E1) - recur_eval(E2);
     'mul' ->
-      eval(E1) * eval(E2);
+      recur_eval(E1) * recur_eval(E2);
     'div' ->
-      eval(E1) / eval(E2)
-  end.
+      recur_eval(E1) / recur_eval(E2)
+end.
+
+
 
 
 
