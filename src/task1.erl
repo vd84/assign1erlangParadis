@@ -17,7 +17,7 @@ eval({Operation, E1, E2}) ->
   try
   {ok, recur_eval({Operation, E1, E2})}
   catch
-    _:_ -> error
+    error:badarith -> error
   end.
 
 
