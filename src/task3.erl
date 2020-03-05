@@ -1,26 +1,37 @@
 %%%-------------------------------------------------------------------
-%%% @author dogge
+%%% @author Douglas
 %%% @copyright (C) 2020, <COMPANY>
 %%% @doc
 %%%
 %%% @end
-%%% Created : 04. mars 2020 13:50
+%%% Created : 05. mars 2020 09:45
 %%%-------------------------------------------------------------------
 -module(task3).
--author("dogge").
+-author("Douglas").
 
 %% API
--export([map/2]).
+-export([map/2, filter/2]).
 
 
-
-
-map(F, [H]) -> H;
-map(F, [H|T]) when size(H): 1 and size(T) == 1 ->
-  [F(H),F(T)];
 map(F, [H|T]) ->
-  A = F(H),
-  %map(F, T)
-  io:format(is_atom(A)),
-  lists:append([A], map(F,T)).
 
+  [F(H)|map(F, T)];
+map(F, []) -> [].
+
+
+
+
+
+
+
+
+
+
+filter(F, [H|T])  ->
+  case F(H) of
+    true ->
+      [H, filter(F, T)];
+    false ->
+      filter(F, T)
+end;
+filter(F, []) -> [].
