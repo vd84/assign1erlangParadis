@@ -10,7 +10,7 @@
 -author("Douglas").
 
 %% API
--export([map/2]).
+-export([map/2, filter/2]).
 
 
 map(F, [H|T]) ->
@@ -21,3 +21,17 @@ map(F, []) -> [].
 
 
 
+
+
+
+
+
+
+filter(F, [H|T])  ->
+  case F(H) of
+    true ->
+      [H, filter(F, T)];
+    false ->
+      filter(F, T)
+end;
+filter(F, []) -> [].
