@@ -14,9 +14,6 @@
 
 
 eval({Operation, A, B}, M) when is_map(M) ->
-
-
-
   try
     {ok, recur_eval({Operation, A, B}, M)}
   catch
@@ -25,9 +22,9 @@ eval({Operation, A, B}, M) when is_map(M) ->
   end.
 
 
-recur_eval(N, M) when is_number(N) -> N;
+recur_eval(N, _M) when is_number(N) -> N;
 recur_eval(N, M) when is_atom(N) and is_map_key(N, M) -> maps:get(N, M);
-recur_eval(N, _M) when not is_number(N) and not is_tuple(N) -> error(badarith);
+recur_eval(N, _M) when not is_tuple(N) -> error(badarith);
 recur_eval({Operation, E1, E2}, M) ->
 
   case Operation of
