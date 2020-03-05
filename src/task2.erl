@@ -14,6 +14,9 @@
 
 
 eval({Operation, A, B}, M) when is_map(M) ->
+
+
+
   try
     {ok, recur_eval({Operation, A, B}, M)}
   catch
