@@ -47,11 +47,12 @@ split(F, TrueResult, FalseResult, [H|T]) ->
 
 groupby(F, L)  ->
   groupby(F, 1, #{negative => [], positive => [], zero => []}, L).
-groupby(_F, Acc, M, []) -> M;
+groupby(_F, _Acc, M, []) -> M;
 groupby(F, Acc, M, [H|T]) ->
   case F(H) of
     positive ->
-      groupby(F, Acc +1, maps:get(positive, M) ++ [H], T);
+      Pos = maps:get(positive, M) + [Acc],
+      groupby(F, Acc +1, maps:put(), T);
     negative ->
       groupby(F, Acc +1, maps:get(negative, M) ++ [H], T);
     true ->
