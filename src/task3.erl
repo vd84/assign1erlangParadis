@@ -51,12 +51,14 @@ groupby(_F, _Acc, M, []) -> M;
 groupby(F, Acc, M, [H|T]) ->
   case F(H) of
     positive ->
-      Pos = maps:get(positive, M) + [Acc],
-      groupby(F, Acc +1, maps:put(), T);
+      Pos = maps:get(positive, M) ++ [Acc],
+      groupby(F, Acc +1, maps:update(positive, Pos, M), T);
     negative ->
-      groupby(F, Acc +1, maps:get(negative, M) ++ [H], T);
-    true ->
-      groupby(F, Acc +1, maps:get(zero, M) ++ [H], T)
+      Neg = maps:get(negative, M) ++ [Acc],
+      groupby(F, Acc +1, maps:update(negative, Neg, M), T);
+    zero ->
+      Zer = maps:get(zero, M) ++ [Acc],
+      groupby(F, Acc +1, maps:update(zero, Zer, M), T)
 
 
   end.
